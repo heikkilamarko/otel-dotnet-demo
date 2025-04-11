@@ -1,0 +1,34 @@
+services:
+  otel-demo-api1:
+    image: otel-demo-api1
+    build: otel-demo/api1
+    ports:
+      - "8080:8080"
+    env_file:
+      - env/otel-demo-api1.env
+    networks:
+      - otel-demo
+    depends_on:
+      - otel-collector
+
+  otel-demo-api2:
+    image: otel-demo-api2
+    build: otel-demo/api2
+    env_file:
+      - env/otel-demo-api2.env
+    networks:
+      - otel-demo
+    depends_on:
+      - otel-collector
+
+  otel-collector:
+    image: otel-collector
+    build: otel-collector
+    env_file:
+      - env/otel-collector.env
+    networks:
+      - otel-demo
+
+networks:
+  otel-demo:
+    name: otel-demo

@@ -1,0 +1,8 @@
+.DS_Store
+.idea
+.vscode
+.terraform*
+*.tfstate*
+k3s.yaml
+bin/
+obj/

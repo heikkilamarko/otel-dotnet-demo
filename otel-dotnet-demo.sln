@@ -1,0 +1,36 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.2.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "otel-demo", "otel-demo", "{74309F3F-2CFA-1727-2B2A-9FEE19E5FB95}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OtelDemo.Api1", "otel-demo\api1\OtelDemo.Api1.csproj", "{B439EF13-4666-32C4-B28E-CC41E2591D70}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OtelDemo.Api2", "otel-demo\api2\OtelDemo.Api2.csproj", "{0C128D52-93C5-AA8D-7247-CDBC0172A90D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B439EF13-4666-32C4-B28E-CC41E2591D70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B439EF13-4666-32C4-B28E-CC41E2591D70}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B439EF13-4666-32C4-B28E-CC41E2591D70}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B439EF13-4666-32C4-B28E-CC41E2591D70}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0C128D52-93C5-AA8D-7247-CDBC0172A90D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C128D52-93C5-AA8D-7247-CDBC0172A90D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C128D52-93C5-AA8D-7247-CDBC0172A90D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C128D52-93C5-AA8D-7247-CDBC0172A90D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{B439EF13-4666-32C4-B28E-CC41E2591D70} = {74309F3F-2CFA-1727-2B2A-9FEE19E5FB95}
+		{0C128D52-93C5-AA8D-7247-CDBC0172A90D} = {74309F3F-2CFA-1727-2B2A-9FEE19E5FB95}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {46C10DDE-36D6-4650-AE65-583C8C1397E9}
+	EndGlobalSection
+EndGlobal
