@@ -5,7 +5,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.AddOtel();
 
-builder.Services.AddScoped<GetRollDiceHandler>();
+builder.Services.AddScoped<PostRollDiceHandler>();
 
 builder.Services.AddHttpClient("otel-demo-api2", client =>
 {
@@ -14,9 +14,9 @@ builder.Services.AddHttpClient("otel-demo-api2", client =>
 
 var app = builder.Build();
 
-app.MapGet("/rolldice/{player}", async (GetRollDiceHandler handler, string player) =>
+app.MapPost("/rolldice/{player}", async (PostRollDiceHandler handler, string player) =>
 {
-    var req = new GetRollDiceRequest { Player = player };
+    var req = new PostRollDiceRequest { Player = player };
     var res = await handler.HandleAsync(req);
     return Results.Ok(res);
 });

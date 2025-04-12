@@ -1,0 +1,27 @@
+@base_url = http://0.0.0.0:8085/v1/projects/local
+
+# List topics
+
+GET {{base_url}}/topics
+Accept: application/json
+
+###
+
+# List subscriptions
+
+GET {{base_url}}/subscriptions
+Accept: application/json
+
+###
+
+# Create topic "demo_topic"
+
+PUT {{base_url}}/topics/demo_topic
+Accept: application/json
+
+###
+
+# Delete topic "demo_topic"
+
+DELETE {{base_url}}/topics/demo_topic
+Accept: application/json

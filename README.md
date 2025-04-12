@@ -25,7 +25,7 @@ docker compose up --build -d
 ## Make Requests
 
 ```bash
-curl -i http://localhost:8080/rolldice/demo
+curl -i -X POST http://localhost:8080/rolldice/demo-player
 ```
 
 ## Stop Services

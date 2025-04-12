@@ -2,27 +2,27 @@ using System.Text.Json.Serialization;
 
 namespace OtelDemo.Api1.Handlers;
 
-public class GetRollDiceRequest
+public class PostRollDiceRequest
 {
     [JsonPropertyName("player")]
     public string Player { get; set; }
 }
 
-public class GetRollDiceResult
+public class PostRollDiceResult
 {
     [JsonPropertyName("results")]
     public List<int> Results { get; set; }
 }
 
-public class GetRollDiceHandler(IHttpClientFactory httpClientFactory, ILogger<GetRollDiceHandler> logger)
+public class PostRollDiceHandler(IHttpClientFactory httpClientFactory, ILogger<PostRollDiceHandler> logger)
 {
-    public async Task<GetRollDiceResult> HandleAsync(GetRollDiceRequest request)
+    public async Task<PostRollDiceResult> HandleAsync(PostRollDiceRequest request)
     {
         logger.LogInformation("rolling dice for {player}", request.Player);
 
         using var client = httpClientFactory.CreateClient("otel-demo-api2");
 
-        var response = await client.GetAsync($"rolldice/{request.Player}");
+        var response = await client.PostAsync($"rolldice/{request.Player}", null);
 
         if (!response.IsSuccessStatusCode)
         {
@@ -30,7 +30,7 @@ public class GetRollDiceHandler(IHttpClientFactory httpClientFactory, ILogger<Ge
             response.EnsureSuccessStatusCode();
         }
 
-        var result = await response.Content.ReadFromJsonAsync<GetRollDiceResult>();
+        var result = await response.Content.ReadFromJsonAsync<PostRollDiceResult>();
 
         logger.LogInformation("rolled dice for {player}", request.Player);
 
