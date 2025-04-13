@@ -34,11 +34,11 @@ public class PubsubSubscriberWorker<TMessageHandler>(
 
                 await using (_client = await CreateSubscriberClientAsync(stoppingToken))
                 {
-                    await _client.StartAsync((message, token) =>
+                    await _client.StartAsync(async (message, token) =>
                     {
                         using var scope = serviceScopeFactory.CreateScope();
                         var handler = scope.ServiceProvider.GetRequiredService<TMessageHandler>();
-                        return handler.HandleAsync(message, token);
+                        return await handler.HandleAsync(message, token);
                     });
                 }
             }

@@ -33,6 +33,7 @@ public static class WebApplicationBuilderExtensions
               .WithTracing(tracing => tracing
                   .AddSource(appName)
                   .AddHttpClientInstrumentation()
+                  .AddEntityFrameworkCoreInstrumentation()
                   .AddAspNetCoreInstrumentation()
                   .AddOtlpExporter(options =>
                   {

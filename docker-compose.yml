@@ -42,11 +42,14 @@ services:
     depends_on:
       - otel-collector
       - pubsub-emulator
+      - postgres
 
   otel-collector:
     image: otel-collector
     build: otel-collector
     restart: unless-stopped
+    ports:
+      - "4317:4317"
     env_file:
       - env/otel-collector.env
     networks:
@@ -62,6 +65,22 @@ services:
     networks:
       - otel-demo
 
+  postgres:
+    image: postgres
+    build: postgres
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    env_file:
+      - env/postgres.env
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    networks:
+      - otel-demo
+
 networks:
   otel-demo:
     name: otel-demo
+
+volumes:
+  postgres:
