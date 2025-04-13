@@ -2,7 +2,6 @@ using System.Text.Json.Serialization;
 using Google.Cloud.PubSub.V1;
 using Messaging;
 using OtelDemo.Worker.Data;
-using OtelDemo.Worker.Extensions;
 
 namespace OtelDemo.Worker.Handlers;
 
@@ -15,12 +14,10 @@ public class DemoMessage
     public string Name { get; set; }
 }
 
-public class DemoMessageHandler(DemoContext db, OtelInstrumentation instrumentation, ILogger<DemoMessageHandler> logger) : IPubsubMessageHandler
+public class DemoMessageHandler(DemoContext db, ILogger<DemoMessageHandler> logger) : IPubsubMessageHandler
 {
     public async Task<SubscriberClient.Reply> HandleAsync(PubsubMessage message, CancellationToken cancellationToken)
     {
-        using var activity = instrumentation.ActivitySource.StartConsumeActivity("demo_subscription", message);
-
         DemoMessage messageData;
         try
         {

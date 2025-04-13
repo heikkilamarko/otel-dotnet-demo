@@ -48,7 +48,7 @@ public static class WebApplicationBuilderExtensions
                       options.Protocol = OpenTelemetry.Exporter.OtlpExportProtocol.Grpc;
                   }));
 
-        builder.Services.AddSingleton<OtelInstrumentation>();
+        builder.Services.AddSingleton<AppActivitySource>();
 
         return builder;
     }

@@ -1,3 +1,4 @@
+using Messaging;
 using OpenTelemetry.Logs;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
@@ -32,6 +33,7 @@ public static class WebApplicationBuilderExtensions
               .ConfigureResource(resource => resource.AddService(appName, serviceVersion: appVersion))
               .WithTracing(tracing => tracing
                   .AddSource(appName)
+                  .AddMessagingInstrumentation()
                   .AddHttpClientInstrumentation()
                   .AddEntityFrameworkCoreInstrumentation()
                   .AddAspNetCoreInstrumentation()
@@ -49,7 +51,7 @@ public static class WebApplicationBuilderExtensions
                       options.Protocol = OpenTelemetry.Exporter.OtlpExportProtocol.Grpc;
                   }));
 
-        builder.Services.AddSingleton<OtelInstrumentation>();
+        builder.Services.AddSingleton<AppActivitySource>();
 
         return builder;
     }

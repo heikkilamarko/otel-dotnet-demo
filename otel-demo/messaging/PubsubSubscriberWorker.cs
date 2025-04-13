@@ -1,9 +1,12 @@
+using System.Diagnostics;
 using Google.Api.Gax;
 using Google.Cloud.PubSub.V1;
 using Grpc.Core;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using OpenTelemetry;
+using OpenTelemetry.Context.Propagation;
 
 namespace Messaging;
 
@@ -36,6 +39,18 @@ public class PubsubSubscriberWorker<TMessageHandler>(
                 {
                     await _client.StartAsync(async (message, token) =>
                     {
+                        var parentContext = Propagators.DefaultTextMapPropagator.Extract(
+                            default,
+                            message.Attributes,
+                            (attrs, key) => attrs.TryGetValue(key, out var value) ? [value] : []);
+
+                        Baggage.Current = parentContext.Baggage;
+
+                        using var activity = MessagingActivitySource.PubsubActivitySource.StartActivity("consume-message", ActivityKind.Consumer, parentContext.ActivityContext);
+
+                        activity?.SetTag("messaging.system", "gcp.pubsub");
+                        activity?.SetTag("messaging.subscription", _client.SubscriptionName);
+
                         using var scope = serviceScopeFactory.CreateScope();
                         var handler = scope.ServiceProvider.GetRequiredService<TMessageHandler>();
                         return await handler.HandleAsync(message, token);

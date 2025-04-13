@@ -25,7 +25,7 @@ public class DemoMessage
     public string Name { get; set; } = "demo message";
 }
 
-public class PostRollDiceHandler(PubsubPublisher<DemoMessage> publisher, OtelInstrumentation instrumentation, ILogger<PostRollDiceHandler> logger)
+public class PostRollDiceHandler(PubsubPublisher<DemoMessage> publisher, AppActivitySource appActivitySource, ILogger<PostRollDiceHandler> logger)
 {
     public async Task<PostRollDiceResult> HandleAsync(PostRollDiceRequest request)
     {
@@ -44,17 +44,14 @@ public class PostRollDiceHandler(PubsubPublisher<DemoMessage> publisher, OtelIns
             Name = $"{request.Player} rolled {string.Join(", ", results)}"
         }.ToJsonPubsubMessage();
 
-        using (var activity = instrumentation.ActivitySource.StartPublishActivity($"{publisher.Options.Project}/{publisher.Options.Topic}", message))
-        {
-            await publisher.PublishAsync(message);
-        }
+        await publisher.PublishAsync(message);
 
         return new PostRollDiceResult { Results = results };
     }
 
     private async Task<int> RollDiceAsync()
     {
-        using var activity = instrumentation.ActivitySource.StartActivity("roll-dice");
+        using var activity = appActivitySource.ActivitySource.StartActivity("roll-dice");
         await Task.Delay(2); // Simulate some work
         var result = Random.Shared.Next(1, 7);
         activity?.SetTag("dice.result", result);
