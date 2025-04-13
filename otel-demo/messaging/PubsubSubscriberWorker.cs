@@ -48,8 +48,11 @@ public class PubsubSubscriberWorker<TMessageHandler>(
 
                         using var activity = MessagingActivitySource.PubsubActivitySource.StartActivity("consume-message", ActivityKind.Consumer, parentContext.ActivityContext);
 
-                        activity?.SetTag("messaging.system", "gcp.pubsub");
-                        activity?.SetTag("messaging.subscription", _client.SubscriptionName);
+                        if (activity != null)
+                        {
+                            activity.SetTag("messaging.system", "gcp.pubsub");
+                            activity.SetTag("messaging.subscription", _client.SubscriptionName);
+                        }
 
                         using var scope = serviceScopeFactory.CreateScope();
                         var handler = scope.ServiceProvider.GetRequiredService<TMessageHandler>();

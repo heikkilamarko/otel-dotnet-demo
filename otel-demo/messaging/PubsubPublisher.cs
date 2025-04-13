@@ -35,13 +35,16 @@ public sealed class PubsubPublisher<T> : IAsyncDisposable
     {
         using var activity = MessagingActivitySource.PubsubActivitySource.StartActivity("publish-message", ActivityKind.Producer);
 
-        activity?.SetTag("messaging.system", "gcp.pubsub");
-        activity?.SetTag("messaging.topic", _client.TopicName);
+        if (activity != null)
+        {
+            activity.SetTag("messaging.system", "gcp.pubsub");
+            activity.SetTag("messaging.topic", _client.TopicName);
 
-        Propagators.DefaultTextMapPropagator.Inject(
-            new PropagationContext(activity.Context, Baggage.Current),
-            message.Attributes,
-            (dict, key, value) => dict[key] = value);
+            Propagators.DefaultTextMapPropagator.Inject(
+                new PropagationContext(activity.Context, Baggage.Current),
+                message.Attributes,
+                (dict, key, value) => dict[key] = value);
+        }
 
         await _initializeTask;
         await _client.PublishAsync(message);
