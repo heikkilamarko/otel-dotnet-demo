@@ -33,6 +33,8 @@ public sealed class PubsubPublisher<T> : IAsyncDisposable
 
     public async Task PublishAsync(PubsubMessage message)
     {
+        await _initializeTask;
+
         using var activity = MessagingActivitySource.PubsubActivitySource.StartActivity("publish-message", ActivityKind.Producer);
 
         if (activity != null)
@@ -46,7 +48,6 @@ public sealed class PubsubPublisher<T> : IAsyncDisposable
                 (dict, key, value) => dict[key] = value);
         }
 
-        await _initializeTask;
         await _client.PublishAsync(message);
     }
 
