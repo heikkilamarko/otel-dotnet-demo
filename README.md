@@ -1,5 +1,7 @@
 # OTEL Demo
 
+![components](doc/components.png)
+
 ## Create Azure Resources
 
 ```bash
