@@ -5,7 +5,6 @@ services:
       context: otel-demo
       dockerfile: auto/api1/Dockerfile
     restart: unless-stopped
-    entrypoint: "/otel-dotnet-auto/instrument.sh dotnet OtelDemo.Api1.dll"
     ports:
       - "8080:8080"
     env_file:
@@ -22,7 +21,6 @@ services:
       context: otel-demo
       dockerfile: auto/api2/Dockerfile
     restart: unless-stopped
-    entrypoint: "/otel-dotnet-auto/instrument.sh dotnet OtelDemo.Api2.dll"
     env_file:
       - env/otel-demo-api2.env
     networks:
@@ -37,7 +35,6 @@ services:
       context: otel-demo
       dockerfile: auto/worker/Dockerfile
     restart: unless-stopped
-    entrypoint: "/otel-dotnet-auto/instrument.sh dotnet OtelDemo.Worker.dll"
     env_file:
       - env/otel-demo-worker.env
     networks:

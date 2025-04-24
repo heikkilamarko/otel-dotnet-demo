@@ -10,7 +10,7 @@ ADD https://github.com/open-telemetry/opentelemetry-dotnet-instrumentation/relea
 RUN apt-get update && apt-get install -y unzip curl && \
     sh otel-dotnet-auto-install.sh
 RUN chmod +x /otel-dotnet-auto/instrument.sh
-
 WORKDIR /app
 COPY --from=build /app .
 EXPOSE 8080
+ENTRYPOINT ["/otel-dotnet-auto/instrument.sh", "dotnet", "OtelDemo.Api1.dll"]
