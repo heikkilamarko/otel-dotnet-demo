@@ -20,8 +20,16 @@ terraform -chdir=infra apply
 
 ## Start Services
 
+### Auto-Instrumentation
+
 ```bash
-docker compose up --build -d
+docker compose -f docker-compose.auto.yml up --build -d
+```
+
+### Manual Instrumentation
+
+```bash
+docker compose -f docker-compose.manual.yml up --build -d
 ```
 
 ## Make Requests
@@ -32,8 +40,16 @@ curl -i -X POST http://localhost:8080/rolldice/demo-player
 
 ## Stop Services
 
+### Auto-Instrumentation
+
 ```bash
-docker compose down
+docker compose -f docker-compose.auto.yml down -v
+```
+
+### Manual Instrumentation
+
+```bash
+docker compose -f docker-compose.manual.yml down -v
 ```
 
 ## Destroy Azure Resources

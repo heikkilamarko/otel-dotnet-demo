@@ -1,0 +1,87 @@
+services:
+  otel-demo-api1:
+    image: otel-demo-api1
+    build:
+      context: otel-demo
+      dockerfile: auto/api1/Dockerfile
+    restart: unless-stopped
+    entrypoint: "/otel-dotnet-auto/instrument.sh dotnet OtelDemo.Api1.dll"
+    ports:
+      - "8080:8080"
+    env_file:
+      - env/otel-demo-api1.env
+    networks:
+      - otel-demo
+    depends_on:
+      - otel-collector
+      - pubsub-emulator
+
+  otel-demo-api2:
+    image: otel-demo-api2
+    build:
+      context: otel-demo
+      dockerfile: auto/api2/Dockerfile
+    restart: unless-stopped
+    entrypoint: "/otel-dotnet-auto/instrument.sh dotnet OtelDemo.Api2.dll"
+    env_file:
+      - env/otel-demo-api2.env
+    networks:
+      - otel-demo
+    depends_on:
+      - otel-collector
+      - pubsub-emulator
+
+  otel-demo-worker:
+    image: otel-demo-worker
+    build:
+      context: otel-demo
+      dockerfile: auto/worker/Dockerfile
+    restart: unless-stopped
+    entrypoint: "/otel-dotnet-auto/instrument.sh dotnet OtelDemo.Worker.dll"
+    env_file:
+      - env/otel-demo-worker.env
+    networks:
+      - otel-demo
+    depends_on:
+      - otel-collector
+      - pubsub-emulator
+      - postgres
+
+  otel-collector:
+    image: otel-collector
+    build: otel-collector
+    restart: unless-stopped
+    env_file:
+      - env/otel-collector.env
+    networks:
+      - otel-demo
+
+  pubsub-emulator:
+    image: gcr.io/google.com/cloudsdktool/cloud-sdk:emulators
+    restart: unless-stopped
+    command: |
+      /bin/sh -c "gcloud beta emulators pubsub start --project=local --host-port=0.0.0.0:8085"
+    ports:
+      - "8085:8085"
+    networks:
+      - otel-demo
+
+  postgres:
+    image: postgres
+    build: postgres
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    env_file:
+      - env/postgres.env
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    networks:
+      - otel-demo
+
+networks:
+  otel-demo:
+    name: otel-demo
+
+volumes:
+  postgres:
