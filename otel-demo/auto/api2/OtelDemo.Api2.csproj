@@ -11,4 +11,8 @@
     <ProjectReference Include="..\..\messaging\Messaging.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="OpenTelemetry.AutoInstrumentation" Version="1.11.0" />
+  </ItemGroup>
+
 </Project>
