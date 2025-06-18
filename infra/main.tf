@@ -8,6 +8,11 @@ variable "location" {
   type        = string
 }
 
+variable "owner" {
+  description = "Owner of the resources, used for tagging"
+  type        = string
+}
+
 provider "azurerm" {
   features {
     log_analytics_workspace {
@@ -20,6 +25,10 @@ provider "azurerm" {
 resource "azurerm_resource_group" "demo" {
   name     = "rg-otel-demo"
   location = var.location
+
+  tags = {
+    owner = var.owner
+  }
 }
 
 resource "azurerm_log_analytics_workspace" "demo" {
